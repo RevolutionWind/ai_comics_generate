@@ -1,0 +1,96 @@
+# --- Python 相关 ---
+# 字节码缓存文件
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 虚拟环境
+venv/
+.env/
+env/
+ENV/
+venv.bak/
+
+# 包构建和分发文件
+build/
+dist/
+*.egg-info/
+*.egg
+*.manifest
+*.spec
+
+# 安装日志和本地开发数据库
+pip-log.txt
+pip-delete-this-directory.txt
+*.sqlite
+
+# 测试相关
+.coverage
+htmlcov/
+.pytest_cache/
+test.db
+
+# --- 环境/配置 ---
+# 敏感文件和环境变量
+.env
+.env.local
+.env.development
+.env.test
+.secrets
+*.key
+*.pem
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# --- IDE 相关 ---
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# PyCharm
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+
+# --- 操作系统生成文件 ---
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs*.db
+Desktop.ini
+
+# Linux
+*~
+
+# --- 日志和临时文件 ---
+*.log
+*.tmp
+*.bak
+
+# 文档生成
+_build/
+
+# 前端相关（如果包含Web组件）
+node_modules/
+/assets/bundles/
+*.css.map
+*.sass.map
+
+# Docker
+docker-compose.override.yml
