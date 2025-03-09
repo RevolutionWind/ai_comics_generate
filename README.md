@@ -29,7 +29,13 @@ cd ai_comics_generate
 pip install -r requirements.txt
 ```
 
-3. 配置环境变量：
+3. 执行安装命令：
+
+```bash
+pip install -e .
+```
+
+4. 配置环境变量：
    config.py
 
 ```
@@ -44,13 +50,13 @@ SD_TEMPLATE_UUID=你的Liblib API TemplateUUID
 1. 直接运行示例：
 
 ```bash
-python -m src.main
+python -m src.processors.content_processor
 ```
 
 2. 在代码中使用：
 
 ```python
-from src.main import main
+from src.processors.content_processor import main
 import asyncio
 
 event_description = "你的事件描述"
