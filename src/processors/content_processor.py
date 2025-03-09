@@ -126,9 +126,9 @@ class ContentProcessor:
 
     def _prepare_prompts(self, copy: dict, prompts_by_copy: dict, event_id: str, topic: dict) -> list:
         """准备图片生成所需的提示词"""
-        prompts = list(itertools.islice(prompts_by_copy[copy['id']], 0, settings.IMAGES_PER_COPY))
-        if len(prompts) < settings.IMAGES_PER_COPY:
-            log.warning(f"[Event:{event_id}][Topic:{topic['id']}][Copy:{copy['id']}] 提示词不足: 需要{settings.IMAGES_PER_COPY}个，实际得到{len(prompts)}个")
+        prompts = list(itertools.islice(prompts_by_copy[copy['id']], 0, settings.SD_PROMPT_PER_COPY))
+        if len(prompts) < settings.SD_PROMPT_PER_COPY:
+            log.warning(f"[Event:{event_id}][Topic:{topic['id']}][Copy:{copy['id']}] 提示词不足: 需要{settings.SD_PROMPT_PER_COPY}个，实际得到{len(prompts)}个")
         return prompts
 
     def _is_last_item(self, topic_idx: int, copy_idx: int, topics: list, copies: list) -> bool:

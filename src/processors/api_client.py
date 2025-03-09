@@ -153,9 +153,9 @@ class APIClient:
                 "generateParams": {
                     "prompt": prompt['content'],
                     "steps": 20,
-                    "width": 512,
-                    "height": 512,
-                    "imgCount": settings.IMAGES_PER_COPY,
+                    "width": 1024,
+                    "height": 1024,
+                    "imgCount": settings.IMAGE_PER_PROMPT,
                     "seed": -1,
                     "restoreFaces": 0
                 }

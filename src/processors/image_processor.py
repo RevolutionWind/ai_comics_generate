@@ -68,7 +68,7 @@ class ImageProcessor:
             
             # 确保图片保存目录存在
             settings.TODAY_IMAGES_DIR.mkdir(parents=True, exist_ok=True)
-            image_path = settings.TODAY_IMAGES_DIR / f"image_{image_id}_{prompt['copy']}.png"
+            image_path = settings.TODAY_IMAGES_DIR / f"{prompt['copy']}_image_{image_id}.png"
             
             # 下载并保存图片
             response = requests.get(image_data["url"])

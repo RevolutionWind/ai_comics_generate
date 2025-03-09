@@ -75,4 +75,3 @@ results = asyncio.run(main(event_description))
 
 - `TOPICS_PER_EVENT`: 每个事件提取的主题数量
 - `COPIES_PER_TOPIC`: 每个主题生成的文案数量
-- `IMAGES_PER_COPY`: 每个文案生成的图片数量

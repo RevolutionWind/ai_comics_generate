@@ -44,7 +44,7 @@ class CopyProcessor:
         log.info(f"[Event:{event_id}][Topic:{topic_id}][Copy:{copy['id']}] 开始生成图片提示词: {copy['content']}")
         
         prompt = settings.IMAGE_PROMPT_GENERATION_PROMPT.format(
-            image_count=settings.IMAGES_PER_COPY,
+            image_count=settings.SD_PROMPT_PER_COPY,
             copy=copy['content']
         )
         

@@ -29,8 +29,10 @@ class Settings(BaseSettings):
     
     # 生成配置
     TOPICS_PER_EVENT: int = 3  # 每个事件生成的主题数量
-    COPIES_PER_TOPIC: int = 5  # 每个主题生成的文案数量
-    IMAGES_PER_COPY: int = 3   # 每个文案生成的图片数量
+    COPIES_PER_TOPIC: int = 3  # 每个主题生成的文案数量
+    SD_PROMPT_PER_COPY: int = 2   # 每个文案生成的图片prompt数量
+    IMAGE_PER_PROMPT: int = 1  # 每个图片prompt生成的图片数量
+
     
     # Prompt模板配置
     TOPIC_EXTRACTION_PROMPT: str = """
@@ -114,7 +116,8 @@ class Settings(BaseSettings):
 
     ##核心指令
     1. 创作必须严格遵循[表象剖析→深度分析→终极洞察]三段式结构
-    2. 输出必须为纯JSON数组格式，禁用任何注释或说明
+    2. 每段文案字数在25字以内
+    3. 输出必须为纯JSON数组格式，禁用任何注释或说明
 
     ##格式铁律
     输出规范：
