@@ -94,3 +94,7 @@ node_modules/
 
 # Docker
 docker-compose.override.yml
+
+# 生成的output文件夹
+output/
+ai_comics_generate.egg-info/
