@@ -5,11 +5,19 @@ from datetime import datetime
 import uuid
 
 class Settings(BaseSettings):
+    # OpenRouter配置
+    OPENROUTER_API_KEY: str = "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"  # 需要替换为实际的 API Key
+    OPENROUTER_API_URL: str = "https://openrouter.ai/api/v1/chat/completions"
+    CLAUDE_MODEL: str = "anthropic/claude-3.7-sonnet:thinking"
+
     # Deepseek配置
     DEEPSEEK_API_KEY: str = "sk-259c33a9a4024f47b5badc8939cc0903"
     DEEPSEEK_API_BASE: str = "https://api.deepseek.com"
     DEEPSEEK_CHAT_COMPLETIONS: str = "/chat/completions"
-    LLM_MODEL: str = "deepseek-reasoner"
+    deepseek_LLM_MODEL: str = "deepseek-reasoner"
+
+    claude_LLM_MODEL: str = "claude-3-sonnet-20240229"
+
     
     # Stable Diffusion API配置
     SD_API_URL: str = "https://openapi.liblibai.cloud"
@@ -30,7 +38,7 @@ class Settings(BaseSettings):
     # 生成配置
     TOPICS_PER_EVENT: int = 3  # 每个事件生成的主题数量
     COPIES_PER_TOPIC: int = 3  # 每个主题生成的文案数量
-    SD_PROMPT_PER_COPY: int = 2   # 每个文案生成的图片prompt数量
+    SD_PROMPT_PER_COPY: int = 1   # 每个文案生成的图片prompt数量
     IMAGE_PER_PROMPT: int = 1  # 每个图片prompt生成的图片数量
 
     
@@ -152,6 +160,42 @@ class Settings(BaseSettings):
     请为以下主题生成{copy_count}个文案：
     
     主题：{topic}
+    """
+
+    CLAUDE_COPY_GENERATION_PROMPT: str = """
+    ##角色定位 
+    你是一个"清醒温暖"文学创作师，擅长在锐利洞察中融入温情幽默，以反差共鸣打动人心
+
+    ##创作美学 
+    现实捕手：敏锐捕捉打工人生活中被忽视的日常瞬间和微小细节 
+    反差共鸣：在疲惫、重复、压力中找到意外温暖或反转，制造情感冲击 
+    自嘲式清醒：用带有自嘲的幽默包裹辛酸现实，让锋芒中带着人情味 
+    具象化表达：用具体场景、物品和动作替代抽象概念，保证接地气 
+    双层反转：先呈现社会真相，再以出人意料的方式解构或温暖它 
+    情感微距镜：放大日常小事中的情感细节，让平凡瞬间闪光 
+
+    ##创作结构 
+    1. 开篇视角：具体化场景或动作，直击打工人日常（如"加班到深夜的我"） 
+    2. 中段真相：呈现常态化困境或无奈（如"肩膀疲惫地扛着公文包"） 
+    3. 结尾反转：出人意料的发现、自嘲或温暖（如"最重的，竟是老妈塞的保温饭盒"） 
+    
+    ##语言风格 
+    1. 具象精准：每个场景、动作、物品都能在读者脑中形成清晰画面 
+    2. 韵律感知：句式节奏自然流畅，适合阅读和回味 
+    3. 反差修辞：用温暖词汇形容困境，或用冷静词汇描述情感，形成张力 
+    4. 幽默暗喻：用日常物品作为生活状态的隐喻（如"黑眼圈打折"） 
+    
+    ##核心指令 
+    1. 每个文案控制在25字以内，一气呵成形成韵律感 
+    2. 必须包含具体场景和物品，避免抽象表达 
+    3. 必须构建反转或反差，形成情感共鸣点 
+    4. 保持清醒文学的锐利洞察，但用温暖或幽默方式表达 
+    5. 输出为纯JSON数组格式 
+    
+    ##格式规范 
+    输出格式： ["文案1", "文案2"]
+    
+    请为给出的主题生成{copy_count}个文案
     """
     
     IMAGE_PROMPT_GENERATION_PROMPT: str = """

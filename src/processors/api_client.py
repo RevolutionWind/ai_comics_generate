@@ -13,7 +13,7 @@ class APIClient:
     def __init__(self):
         self.api_key = settings.DEEPSEEK_API_KEY
         self.api_base = settings.DEEPSEEK_API_BASE
-        
+
     async def call_deepseek_api(self, messages: List[Dict], temperature: float = 0.7) -> str:
         """调用 Deepseek API"""
         headers = {
@@ -22,7 +22,7 @@ class APIClient:
         }
         
         data = {
-            "model": settings.LLM_MODEL,
+            "model": settings.deepseek_LLM_MODEL,
             "messages": messages,
             "temperature": temperature
         }
@@ -42,6 +42,51 @@ class APIClient:
             return response.json()["choices"][0]["message"]["content"]
         except Exception as e:
             log.error(f"Deepseek API 调用失败: {str(e)}")
+            raise
+    
+    async def call_claude_api(self, messages: List[Dict], system: str = None, temperature: float = 0.7) -> str:
+        """调用 Claude API (通过 OpenRouter)"""
+        try:
+            headers = {
+                "Authorization": f"Bearer {settings.OPENROUTER_API_KEY}",
+                "Content-Type": "application/json"
+            }
+
+            # 转换消息格式
+            formatted_messages = []
+            for msg in messages:
+                content = []
+                if isinstance(msg["content"], str):
+                    content = [{"type": "text", "text": msg["content"]}]
+                elif isinstance(msg["content"], list):
+                    content = msg["content"]
+                formatted_messages.append({"role": msg["role"], "content": content})
+
+            # 如果有系统提示，添加到消息列表开头
+            if system:
+                formatted_messages.insert(0, {
+                    "role": "system",
+                    "content": [{"type": "text", "text": system}]
+                })
+
+            data = {
+                "model": settings.CLAUDE_MODEL,
+                "messages": formatted_messages
+            }
+
+            response = requests.post(
+                settings.OPENROUTER_API_URL,
+                headers=headers,
+                json=data
+            )
+
+            if response.status_code != 200:
+                raise Exception(f"OpenRouter API 请求失败: {response.text}")
+
+            log.info(f"OpenRouter API 响应: {response.json()}")
+            return response.json()["choices"][0]["message"]["content"]
+        except Exception as e:
+            log.error(f"OpenRouter API 调用失败: {str(e)}")
             raise
 
     async def _generate_signature(self, uri: str, timestamp: str, signature_nonce: str) -> str:

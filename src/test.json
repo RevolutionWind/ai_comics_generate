@@ -1,5 +1,22 @@
 [
-  "A hand-drawn watercolor illustration with bold black outlines in a minimalist, cartoon-like style. The image shows a 'description: monk with serene face' being examined by a large 'examining object: digital scroll'. The 'examining object' has a blue-gray color and extends a curved arm holding a small 'held item: broken inkstone'. The 'person' is wearing a 'clothing: hemp robe' and displays a 'emotion: contemplative' expression. The illustration uses a limited color palette with 'colors: ink black, rice paper, misty blue' watercolor washes on a plain white background. The overall style is whimsical and slightly surreal with clean lines and minimal details.",
-  "A hand-drawn watercolor illustration with bold black outlines in a minimalist, cartoon-like style. The image shows a 'description: scholar holding brush' being examined by a large 'examining object: data cloud'. The 'examining object' has a blue-gray color and extends a curved arm holding a small 'held item: pixel ink'. The 'person' is wearing a 'clothing: silk gown' and displays a 'emotion: conflicted' expression. The illustration uses a limited color palette with 'colors: slate gray, pearl white, bamboo green' watercolor washes on a plain white background. The overall style is whimsical and slightly surreal with clean lines and minimal details.",
-  "A hand-drawn watercolor illustration with bold black outlines in a minimalist, cartoon-like style. The image shows a 'description: elder with long beard' being examined by a large 'examining object: circuit tree'. The 'examining object' has a blue-gray color and extends a curved arm holding a small 'held item: codex book'. The 'person' is wearing a 'clothing: linen robe' and displays a 'emotion: wise' expression. The illustration uses a limited color palette with 'colors: charcoal, rice wash, dawn blue' watercolor washes on a plain white background. The overall style is whimsical and slightly surreal with clean lines and minimal details."
+  {
+    "id": "d8f1752c-30bc-4b29-82f8-9215363d8f4d",
+    "content": "六点整，手表催我走人，公文包却固执地等待加班指令。"
+  },
+  {
+    "id": "26d54ce5-fd42-496f-9884-b592ead40078",
+    "content": "五点半，全员撤离，办公室的灯也被迫学会了准时关闭。"
+  },
+  {
+    "id": "bd830794-98d2-4533-b7c5-14c854e11280",
+    "content": "久违的准时下班，才知道夕阳西下比加班红包更动人。"
+  },
+  {
+    "id": "c68df15d-b2d6-4500-b755-51691be894f6",
+    "content": "准时下班后盯着天花板，大脑硬盘还在高速运转明天的会议。"
+  },
+  {
+    "id": "c83fbf7a-720c-4518-829e-7b920cbcc058",
+    "content": "被迫准时回家的路上，手指仍在给工作邮件点着赞。"
+  }
 ]

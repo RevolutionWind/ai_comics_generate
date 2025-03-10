@@ -16,15 +16,14 @@ class CopyProcessor:
         """为每个主题生成文案"""
         log.info(f"[Event:{event_id}][Topic:{topic['id']}] 开始为主题生成文案: {topic['content']}")
         
-        prompt = settings.COPY_GENERATION_PROMPT.format(
-            copy_count=settings.COPIES_PER_TOPIC,
-            topic=topic['content']
+        system_prompt = settings.CLAUDE_COPY_GENERATION_PROMPT.format(
+            copy_count=settings.COPIES_PER_TOPIC
         )
         
         try:
-            content = await self.api_client.call_deepseek_api([
-                {"role": "user", "content": prompt}
-            ], temperature=0.8)
+            content = await self.api_client.call_claude_api([
+                {"role": "user", "content": f"主题：{topic['content']}"}
+            ], system=system_prompt, temperature=0.8)
 
             content = clean_json_string(content)
             copies = json.loads(content)
@@ -71,11 +70,11 @@ if __name__ == "__main__":
         copy_processor = CopyProcessor()
         copy = {
             "id": "test_topic_1",
-            "content": "地铁隧道吞没千万种人生轨迹，却吐不出半个自由坐标。奔跑路线早被房价和学区焊死，所谓梦想不过是精装版的生存贷款"
+            "content": "被迫准时下班：关怀政策下的新型焦虑"
         }
         topic_id = "test_topic_1"
         event_id = "test_event_1"
-        image_des = await copy_processor.generate_image_prompts(copy, topic_id, event_id)
-        print(image_des)
+        result = await copy_processor.generate_copies(copy, event_id)
+        print(result)
 
     asyncio.run(main())
