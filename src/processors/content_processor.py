@@ -81,29 +81,20 @@ class ContentProcessor:
         log.debug(f"[Event:{event_id}] 开始生成图片提示词")
         prompts_by_copy = {}
         
-        with ThreadPoolExecutor() as executor:
-            tasks = []
-            # 为每个文案创建提示词生成任务
-            for topic_idx, copies in enumerate(all_copies):
-                for copy in copies:
-                    task = executor.submit(
-                        self._run_async_task,
-                        self.copy_processor.generate_image_prompts,
+        # 为每个文案创建提示词生成任务
+        for topic_idx, copies in enumerate(all_copies):
+            for copy in copies:
+                try:
+                    # 直接使用await调用异步方法
+                    result = await self.copy_processor.generate_image_prompts(
                         copy,
                         topics[topic_idx]['id'],
                         event_id
                     )
-                    tasks.append((task, copy['id']))
-            
-            # 处理任务结果
-            for task, copy_id in tasks:
-                try:
-                    result = task.result()
-                    prompts_by_copy[copy_id] = deque(result)
+                    prompts_by_copy[copy['id']] = deque(result)
                 except Exception as e:
-                    log.error(f"[Event:{event_id}][Copy:{copy_id}] 生成提示词失败: {str(e)}")
-                    prompts_by_copy[copy_id] = deque()
-        
+                    log.error(f"[Event:{event_id}][Copy:{copy['id']}] 生成提示词失败: {str(e)}")
+                    prompts_by_copy[copy['id']] = deque()
         return prompts_by_copy
 
     async def _process_image_batches(self, topics: list, all_copies: list, prompts_by_copy: dict, event_id: str) -> list:
@@ -194,25 +185,3 @@ class ContentProcessor:
     
         return batch_results
             
-        
-
-if __name__ == "__main__":
-    async def test_process_event():
-        """测试完整的事件处理流程"""
-        try:
-            content_processor = ContentProcessor()
-            test_description = """据自媒体“互联网坊间八卦”了解，美的从这周起就开始提倡各部门领导严谨控制加班，规定18:20不允许有人还在公司加班，同时也禁止了员工就餐后再返回工位继续加班的现象。到目前为止，一到下班时间，HR就开始挨着部门催促大家抓紧时间下班了。"""
-            
-            # 执行处理流程
-            results = await content_processor.process_event(test_description)
-            
-            # 验证基础结果
-            assert len(results) > 0, "至少应生成一个主题的处理结果"
-            print(f"测试通过，共处理 {len(results)} 个主题")
-                
-        except Exception as e:
-            print(f"处理流程测试失败: {str(e)}")
-            raise
-    
-    # 运行测试
-    asyncio.run(test_process_event())

@@ -50,7 +50,7 @@ SD_TEMPLATE_UUID=你的Liblib API TemplateUUID
 1. 直接运行示例：
 
 ```bash
-python -m src.processors.content_processor
+python src/main.py
 ```
 
 2. 在代码中使用：

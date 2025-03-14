@@ -60,27 +60,24 @@ class ImageProcessor:
                 raise Exception(f"生图任务未成功完成，最终状态: {result.get('status')}")
             
             image_data = result.get("image_data")
-            if not image_data:
+            if not image_data or not image_data[0]:
                 raise Exception("生图结果中没有有效的图片数据，可能未通过审核")
-            
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            image_id = str(uuid.uuid4())
             
             # 确保图片保存目录存在
             settings.TODAY_IMAGES_DIR.mkdir(parents=True, exist_ok=True)
-            image_path = settings.TODAY_IMAGES_DIR / f"{prompt['copy']}_image_{image_id}.png"
-            
-            # 下载并保存图片
-            response = requests.get(image_data["url"])
-            response.raise_for_status()
-            
-            with open(image_path, "wb") as f:
-                f.write(response.content)
+            for img in image_data:
+                image_id = str(uuid.uuid4())
+                image_path = settings.TODAY_IMAGES_DIR / f"{prompt['copy']}_image_{image_id}.png"
+                
+                # 下载并保存图片
+                response = requests.get(img["url"])
+                response.raise_for_status()
+                
+                with open(image_path, "wb") as f:
+                    f.write(response.content)
                 
             result = {
-                "id": image_id,
-                "path": str(image_path),
-                "seed": image_data.get("seed")
+                "OK": True
             }
             
             log.info(f"[Event:{event_id}][Topic:{topic_id}][Copy:{copy_id}][Prompt:{prompt['id']}] 成功生成图片: {result}")
@@ -138,6 +135,16 @@ if __name__ == "__main__":
                 },
                 {
                     'id': 'test_prompt_2', 
+                    'copy': 'test2',
+                    'content': 'A minimalist watercolor painting in soft pastel colors showing a 【object: vintage camera】 sitting on a 【surface: wooden table】. The camera has 【details: brass accents and leather straps】 with a 【background: blurred bookshelf】. The style features loose brushstrokes and subtle texture effects.'
+                },
+                {
+                    'id': 'test_prompt_3', 
+                    'copy': 'test2',
+                    'content': 'A minimalist watercolor painting in soft pastel colors showing a 【object: vintage camera】 sitting on a 【surface: wooden table】. The camera has 【details: brass accents and leather straps】 with a 【background: blurred bookshelf】. The style features loose brushstrokes and subtle texture effects.'
+                },
+                {
+                    'id': 'test_prompt_4', 
                     'copy': 'test2',
                     'content': 'A minimalist watercolor painting in soft pastel colors showing a 【object: vintage camera】 sitting on a 【surface: wooden table】. The camera has 【details: brass accents and leather straps】 with a 【background: blurred bookshelf】. The style features loose brushstrokes and subtle texture effects.'
                 }

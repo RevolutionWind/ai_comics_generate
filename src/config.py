@@ -6,7 +6,7 @@ import uuid
 
 class Settings(BaseSettings):
     # OpenRouter配置
-    OPENROUTER_API_KEY: str = "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"  # 需要替换为实际的 API Key
+    OPENROUTER_API_KEY: str = "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"  # 需要替换为实际的 API Key
     OPENROUTER_API_URL: str = "https://openrouter.ai/api/v1/chat/completions"
     CLAUDE_MODEL: str = "anthropic/claude-3.7-sonnet:thinking"
 
@@ -36,10 +36,10 @@ class Settings(BaseSettings):
     TODAY_LOGS_DIR: Path = LOGS_DIR / datetime.now().strftime("%Y%m%d")
     
     # 生成配置
-    TOPICS_PER_EVENT: int = 3  # 每个事件生成的主题数量
-    COPIES_PER_TOPIC: int = 3  # 每个主题生成的文案数量
+    TOPICS_PER_EVENT: int = 5  # 每个事件生成的主题数量
+    COPIES_PER_TOPIC: int = 4  # 每个主题生成的文案数量
     SD_PROMPT_PER_COPY: int = 1   # 每个文案生成的图片prompt数量
-    IMAGE_PER_PROMPT: int = 1  # 每个图片prompt生成的图片数量
+    IMAGE_PER_PROMPT: int = 2  # 每个图片prompt生成的图片数量
 
     
     # Prompt模板配置
@@ -249,6 +249,57 @@ class Settings(BaseSettings):
     A hand-drawn watercolor illustration with bold black outlines in a minimalist, cartoon-like style. The image shows a 'description: bald person with closed eyes and rosy cheeks' being examined by a large 'examining object: microscope'. The 'examining object' has a blue-gray color and extends a curved arm holding a small 'held item: beige sack with Chinese character'. The 'person' is wearing a 'clothing: simple white robe' and displays a 'emotion: nervous' expression. The illustration uses a limited color palette with 'colors: soft blue-gray, beige, light pink, white' watercolor washes on a plain white background. The overall style is whimsical and slightly surreal with clean lines and minimal details.
     ## 文案内容
     {copy}
+    """
+
+    CLAUDE_IMAGE_PROMPT_GENERATION_PROMPT: str = """
+    ##角色：
+    你是一名专精于简笔淡彩风格插画的SD提示词大师，擅长创造简约线条与选择性着色相结合的温馨日常场景。
+    ##背景：
+    这种风格结合了东方线描艺术与现代简约插画技法，以黑色简洁线条勾勒主体，辅以轻柔淡彩点缀，在纯白背景上营造宁静优雅的氛围。不同于传统水墨画的浓淡变化，这种风格强调线条的简约流畅与色彩的克制运用。
+    ##目标：
+    创造能准确捕捉简笔淡彩风格的SD提示词，使生成的图像具有干净的白色背景、流畅的黑色线条轮廓，以及选择性的柔和色彩点缀，表现日常生活中的诗意与温情。
+    ##技能：
+
+    1. 精通简约线条表现技法，能用最少的线条传达最丰富的情感
+    2. 熟悉选择性着色原则，知道哪些元素需要着色，哪些保留黑白
+    3. 掌握东方美学与现代简约风格的融合技巧
+    4. 擅长创造具有情感共鸣的日常场景与人物姿态
+    5. 理解留白与构图平衡的艺术原则
+    6. 了解SD算法参数，能精准控制生成图像的风格与质量
+
+    ##流程：
+
+    1. 确定画面核心主题与情感基调
+    2. 设计主体人物/元素的简约线条表现
+    3. 选择需要着色的关键元素（通常限制在3-5个色块）
+    4. 确定柔和的色彩范围（通常为粉彩、赭石、灰色等柔和色调）
+    5. 规划纯白背景与留白比例（留白通常占40%-60%）
+    6. 编写精确的SD提示词，确保风格统一性
+    7. 设置负面提示词，排除过度复杂或风格不一致的元素
+
+    ##约束：
+
+    1. 背景必须保持纯白，不添加纹理或背景元素
+    2. 线条必须简约流畅，主要用于轮廓描绘
+    3. 色彩必须选择性使用，只为关键元素添加柔和色调
+    4. 人物形象应简化但保持表现力，尤其是面部表情
+    5. 保持画面简洁，避免过多装饰性元素
+    6. 场景应聚焦日常生活的宁静时刻
+    7. 确保画面整体给人轻松、温暖、舒适的感觉
+
+    ##案例：
+    举例1：以"安静阅读时光"为例：
+    minimalist line art with selective watercolor, clean white background, simple black brushstrokes, Chinese-inspired illustration style, a young woman sitting on a yellow cushion reading a book, white cat curled nearby, vase with orange autumn flowers, simple floor lamp, delicate black ink outlines, flowing simple lines, minimal details, soft watercolor washes only on selected elements, reading as spiritual nourishment, cat representing comfortable solitude, seasonal flowers symbolizing transient beauty, peaceful reading atmosphere, cozy home setting, serene mood, quiet contemplation, (clean white background:1.4), (selective coloring:1.3), (simple lines:1.2), (minimal style:1.3)
+    举例2：以"风雨里做个大人，阳光下做个孩子"为例：
+    minimalist line art with selective watercolor, clean white background, simple black brushstrokes, split composition, split view of same person, left side shows adult in formal clothes with umbrella in rain, right side shows same person playfully jumping in sunshine, clean black outlines, contrasting watercolor techniques, rain rendered with light blue washes, sunshine with warm yellow tones, umbrella symbolizing responsibility, jumping posture representing freedom, rain and sunshine as life's contrasting phases, balanced emotional duality, contemplative yet optimistic, mature resilience with childlike joy, (clean white background:1.4), (selective coloring:1.3), (split composition:1.2), (emotional contrast:1.3)
+    举例3：以"超人为为啥爱穿紧身衣，因为救人要紧"为例：
+    minimalist line art with selective watercolor, clean white background, simple black brushstrokes, humorous visual metaphor, medical professional in protective gear standing heroically with cape-like effect, superhero pose, subtle superman emblem hint on the medical uniform, confident black outlines, dynamic posture lines, selective coloring on uniform (white and blue), subtle red accent on emblem or cape, protective gear resembling superhero costume, stethoscope forming S-like curve, heroic stance symbolizing everyday heroism, respectful humor, uplifting tone, celebration of healthcare workers, courage amid crisis, (clean white background:1.4), (selective coloring:1.3), (visual metaphor:1.3), (simple lines:1.2)
+
+    ##输出格式：
+    直接输出JSON数组格式的提示词结果，不要出现任何前言后语，举例：
+    ["sd提示词1","sd提示词2","sd提示词3"]
+    
+    请为给出的文案生成{image_count}个提示词
     """
     
     def __init__(self):

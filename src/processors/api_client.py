@@ -156,11 +156,13 @@ class APIClient:
             if resp_data.get("images"):
                 valid_images = [img for img in resp_data["images"] if img.get("auditStatus") == 3]
                 if valid_images:
-                    first_image = valid_images[0]
-                    image_data = {
-                        "url": first_image.get("imageUrl"),
-                        "seed": first_image.get("seed")
-                    }
+                    image_data = [
+                        {
+                            "url": img.get("imageUrl"),
+                            "seed": img.get("seed")
+                        }
+                        for img in valid_images
+                    ]
             
             return {
                 "status": status,

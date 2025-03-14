@@ -42,15 +42,14 @@ class CopyProcessor:
         """为每个文案生成SD提示词"""
         log.info(f"[Event:{event_id}][Topic:{topic_id}][Copy:{copy['id']}] 开始生成图片提示词: {copy['content']}")
         
-        prompt = settings.IMAGE_PROMPT_GENERATION_PROMPT.format(
-            image_count=settings.SD_PROMPT_PER_COPY,
-            copy=copy['content']
+        system_prompt = settings.CLAUDE_IMAGE_PROMPT_GENERATION_PROMPT.format(
+            image_count=settings.SD_PROMPT_PER_COPY
         )
         
         try:
-            content = await self.api_client.call_deepseek_api([
-                {"role": "user", "content": prompt}
-            ], temperature=0.7)
+            content = await self.api_client.call_claude_api([
+                {"role": "user", "content": f"文案{copy['content']}"}
+            ], system=system_prompt, temperature=0.8)
             content = clean_json_string(content)
             prompts = json.loads(content)
             # 为每个提示词添加ID
@@ -70,11 +69,12 @@ if __name__ == "__main__":
         copy_processor = CopyProcessor()
         copy = {
             "id": "test_topic_1",
-            "content": "被迫准时下班：关怀政策下的新型焦虑"
+            "content": "咖啡杯上的品牌光鲜，钱包里的余额枯萎。"
         }
         topic_id = "test_topic_1"
         event_id = "test_event_1"
-        result = await copy_processor.generate_copies(copy, event_id)
+        result = await copy_processor.generate_image_prompts(copy, topic_id, event_id)
+        # result = await copy_processor.generate_copies(copy, event_id)
         print(result)
 
     asyncio.run(main())
